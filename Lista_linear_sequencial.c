@@ -6,32 +6,40 @@
 
 typedef int TIPOCHAVE;
 
-typedef struct{
+typedef struct
+{
     TIPOCHAVE chave;
 
-    } REGISTRO;
+} REGISTRO;
 
-typedef struct {
+typedef struct
+{
     REGISTRO A[MAX];
     int nroElem;
-    } LISTA;
+} LISTA;
 
-void inicializaLista(LISTA* l, int n){
+void inicializaLista(LISTA* l, int n)
+{
     l->nroElem = n;
 }
 
-void preencheLista(LISTA* l){
+void preencheLista(LISTA* l)
+{
     printf("Elementos da lista\n");
-    for(int i = 0; i < l->nroElem; i++){
+    for(int i = 0; i < l->nroElem; i++)
+    {
         int elemento;
-        printf("Elemento %i: \n", i+1);
+        printf("\nElemento %i: ", i+1);
+
         scanf("%d", &elemento);
         l->A[i].chave = elemento;
         fflush(stdin);
     }
 }
 
-void opcoes(){
+void opcoes()
+{
+    printf("\n\n\n");
     printf("(0) Tamanho da lista\n");
     printf("(1) Exibir os elementos\n");
     printf("(2) Buscar elemento\n");
@@ -41,64 +49,93 @@ void opcoes(){
     printf("(6) Encerrar\n");
 }
 
-int tamanhoLista(LISTA l){
+int tamanhoLista(LISTA l)
+{
     return l.nroElem;
 }
 
-void exibeLista(LISTA l){
-    for(int i = 0; i < l.nroElem; i++){
-        printf("%i ", l.A[i]);
+void exibeLista(LISTA l)
+{
+    for(int i = 0; i < l.nroElem; i++)
+    {
+        printf("%i ", l.A[i].chave);
     }
     printf("\n");
 }
 
-int buscaElemento(LISTA l, TIPOCHAVE elemento){
-    for(int i = 0; i < l.nroElem; i++){
-        if(l.A[i].chave == elemento){
+int buscaElemento(LISTA l, TIPOCHAVE elemento)
+{
+    for(int i = 0; i < l.nroElem; i++)
+    {
+        if(l.A[i].chave == elemento)
+        {
             return i;
         }
-    } return -1;
+    }
+    return -1;
 }
 
-void inserirElemento(LISTA* l, int elemento){
-    l->A[l->nroElem + 1].chave = elemento;
+void inserirElemento(LISTA* l, int elemento)
+{
+    l->A[l->nroElem].chave = elemento;
     l->nroElem ++;
+
 }
 
-int main(){
+int main()
+{
     LISTA l;
     int tamanho;
     printf("Tamanho da lista: \n");
     scanf("%d", &tamanho);
-    fflush(stdin);
     inicializaLista(&l, tamanho);
     preencheLista(&l);
-    fflush(stdin);
+    system("cls");
     bool exit = false;
-    while(!exit){
+    while(!exit)
+    {
         opcoes();
         int escolha;
         scanf("%d", &escolha);
-        if(escolha == 0){
-            printf(tamanhoLista(l));
-        } else if(escolha == 1){
+        if(escolha == 0)
+        {
+            system("cls");
+            printf("Tamanho da Lista: %d\n\n", tamanhoLista(l));
+        }
+        else if(escolha == 1)
+        {
+            system("cls");
             exibeLista(l);
-        }else if(escolha ==2){
-            printf("Buscar: \n");
+            printf("\n\n");
+        }
+        else if(escolha ==2)
+        {
+            system("cls");
+            printf("Qual elemento deseja buscar:");
             TIPOCHAVE elemento;
             scanf("%d", &elemento);
-            if(buscaElemento(l, elemento) == -1) printf("Nao existe");
-            printf(buscaElemento(l, elemento));
-        } else if(escolha == 3){
+            printf("\n\n");
+            if(buscaElemento(l, elemento) == -1)
+            {
+                printf("Nao existe");
+                continue;
+            }
+            printf("O elemento existe e ocupa a posição: %d", buscaElemento(l, elemento));
+        }
+        else if(escolha == 3)
+        {
+            system("cls");
             printf("Adicionar: \n");
             int elemento;
             scanf("%d", &elemento);
             inserirElemento(&l, elemento);
-        }else if(escolha == 6){
+        }
+        else if(escolha == 6)
+        {
             exit = true;
         }
 
 
     }
-return 0;
+    return 0;
 }
