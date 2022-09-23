@@ -24,12 +24,14 @@ void inicializaLista(LISTA* l, int n)
 }
 
 //bubble sort
-void ordena(LISTA* l){
+void ordena(LISTA* l)
+{
     int i, j;
     for (i = 0; i < l->nroElem; i++)
 
         for(j = 0; j < l->nroElem - i - 1; j++)
-            if((l->A[j].chave > l->A[j + 1].chave)){
+            if((l->A[j].chave > l->A[j + 1].chave))
+            {
                 int x;
                 x = l->A[j].chave;
                 l->A[j].chave = l->A[j+1].chave;
@@ -40,13 +42,21 @@ void ordena(LISTA* l){
 void preencheLista(LISTA* l)
 {
     printf("Elementos da lista\n");
-    for(int i = 0; i < l->nroElem; i++)
+    int i = 0;
+    while(i < l->nroElem)
     {
         int elemento;
         printf("\nElemento %i: ", i+1);
 
         scanf("%d", &elemento);
+        if(buscaElemento(l, elemento) != -1)
+        {
+            printf("Elemento ja existente\n");
+            continue;
+        }
+
         l->A[i].chave = elemento;
+        i++;
     }
     ordena(l);
 }
@@ -91,6 +101,11 @@ int buscaElemento(LISTA l, TIPOCHAVE elemento)
 
 void inserirElemento(LISTA* l, int elemento)
 {
+    if(buscaElemento(*l, elemento) != -1)
+    {
+        printf("Elemento ja existente\n");
+        return;
+    }
     l->A[l->nroElem].chave = elemento;
     l->nroElem ++;
     ordena(l);
