@@ -69,7 +69,7 @@ void opcoes()
     printf("(2) Buscar elemento\n");
     printf("(3) Inserir elemento\n");
     printf("(4) Excluir elemento\n");
-    printf("(5) Reinicializar estrutura\n");
+    printf("(5) Destruir lista\n");
     printf("(6) Encerrar\n");
 }
 
@@ -111,6 +111,17 @@ void inserirElemento(LISTA* l, int elemento)
     ordena(l);
 }
 
+bool excluirElemento(LISTA* l, int elemento)
+{
+    int pos, j;
+    pos = buscaElemento(*l, elemento);
+    if(pos == -1) return(false);
+    for(j = pos; j < l->nroElem - 1; j++)
+        l->A[j] = l->A[j+1];
+    l->nroElem--;
+    return(true);
+}
+
 int main()
 {
     LISTA l;
@@ -149,7 +160,7 @@ int main()
                 printf("Nao existe");
                 continue;
             }
-            printf("O elemento existe e ocupa a posi��o: %d", buscaElemento(l, elemento));
+            printf("O elemento existe e ocupa a posicao: %d", buscaElemento(l, elemento));
         }
         else if(escolha == 3)
         {
@@ -158,6 +169,19 @@ int main()
             int elemento;
             scanf("%d", &elemento);
             inserirElemento(&l, elemento);
+        }
+        else if(escolha ==4)
+        {
+            system("cls");
+            printf("Excluir: \n");
+            int elemento;
+            scanf("%d", &elemento);
+            excluirElemento(&l, elemento);
+        }
+        else if(escolha == 5)
+        {
+            system("cls");
+            l.nroElem = 0;
         }
         else if(escolha == 6)
         {
