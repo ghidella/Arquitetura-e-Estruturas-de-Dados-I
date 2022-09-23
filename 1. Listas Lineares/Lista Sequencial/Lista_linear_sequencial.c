@@ -23,6 +23,20 @@ void inicializaLista(LISTA* l, int n)
     l->nroElem = n;
 }
 
+//bubble sort
+void ordena(LISTA* l){
+    int i, j;
+    for (i = 0; i < l->nroElem; i++)
+
+        for(j = 0; j < l->nroElem - i - 1; j++)
+            if((l->A[j].chave > l->A[j + 1].chave)){
+                int x;
+                x = l->A[j].chave;
+                l->A[j].chave = l->A[j+1].chave;
+                l->A[j + 1].chave = x;
+            }
+}
+
 void preencheLista(LISTA* l)
 {
     printf("Elementos da lista\n");
@@ -33,8 +47,8 @@ void preencheLista(LISTA* l)
 
         scanf("%d", &elemento);
         l->A[i].chave = elemento;
-        fflush(stdin);
     }
+    ordena(l);
 }
 
 void opcoes()
@@ -79,7 +93,7 @@ void inserirElemento(LISTA* l, int elemento)
 {
     l->A[l->nroElem].chave = elemento;
     l->nroElem ++;
-
+    ordena(l);
 }
 
 int main()
@@ -120,7 +134,7 @@ int main()
                 printf("Nao existe");
                 continue;
             }
-            printf("O elemento existe e ocupa a posição: %d", buscaElemento(l, elemento));
+            printf("O elemento existe e ocupa a posiï¿½ï¿½o: %d", buscaElemento(l, elemento));
         }
         else if(escolha == 3)
         {
