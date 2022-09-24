@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX 50
 #define INVALIDO -1
 
-typedef TIPOCHAVE;
+typedef int TIPOCHAVE;
 
 typedef struct
 {
@@ -20,57 +21,108 @@ typedef struct
 typedef struct
 {
     ELEMENTO A[MAX];
-    int incio;
+    int inicio;
     int dispo;
 } LISTA;
 
-void inicializarLista(LISTA* l){
+void inicializarLista(LISTA* l)
+{
     int i;
     for (i = 0; i < MAX-1; i++)
         l->A[i].prox = i + 1;
     l->A[MAX - 1].prox = INVALIDO;
-    l->incio = INVALIDO;
+    l->inicio = INVALIDO;
     l->dispo = 0;
 }
 
-int tamanho(LISTA* l){
-    int i = l->incio;
+int tamanho(LISTA* l)
+{
+    int i = l->inicio;
     int tam = 0;
     while(i != INVALIDO)
         tam++;
-        i = l->A[i].prox;
+    i = l->A[i].prox;
     return tam;
 }
 
 
 
-void preencheLista(LISTA* l, int n){
+void preencheLista(LISTA* l, int n)
+{
     int i;
-    for (i = 0; i < n; i++){
+    for (i = 0; i < n; i++)
+    {
 
     }
-    }
+}
 
-void exibirLista(LISTA* l){
-    int i = l->incio;
-    while (i!= INVALIDO){
+void exibirLista(LISTA* l)
+{
+    int i = l->inicio;
+    while (i!= INVALIDO)
+    {
         printf("%d ", l->A[i].reg.chave);
         i = l->A[i].prox;
     }
     printf("\"\n");
 }
 
-int buscaSeq(LISTA* l, int elemento){
-    int i = l->incio;
-    while (i != INVALIDO){
-        if(l->A[i].reg.chave == elemento) return i;
-        i++;
-    }
-    return INVALIDO;
+int obterNo(LISTA* l)
+{
+    int resultado = l->dispo;
+    if (l->dispo != INVALIDO)
+        l->dispo = l->A[l->dispo].prox;
+    return resultado;
 }
 
 
-int main(){
+int buscaSeq(LISTA* l, int ch) //listas ordenadas
+{
+    int i = l->inicio;
+    while (i != INVALIDO && l->A[i].reg.chave < ch)
+    {
+        i = l->A[i].prox;
+    }
+    if (i != INVALIDO && l->A[i].reg.chave == ch) return i;
+    return INVALIDO;
+}
+
+bool inserirOrd(LISTA* l, REGISTRO reg)
+{
+    if (l->dispo == INVALIDO) return false;
+    int i = l->inicio;
+    int ant = INVALIDO;
+    TIPOCHAVE ch = reg.chave;
+    //l->A[l->dispo] = reg.chave;
+    //l->dispo = obterNo(l);
+
+    while (i != INVALIDO && l->A[i].reg.chave < reg.chave)
+    {
+        ant = i;
+        i = l->A[i].prox;
+    }
+    if (i != INVALIDO && l->A[i].reg.chave == ch) return false; //sem elementos iguais
+    i = obterNo(l);
+    l->A[i].reg = reg;
+    if (ant == INVALIDO)
+    {
+        l->A[i].prox = l->inicio;
+        l->inicio = i;
+    }
+    else
+    {
+        l->A[i].prox = l->A[ant].prox;
+        l->A[ant].prox = i;
+    }
+    return true;
+
+
+}
+
+
+
+int main()
+{
     LISTA l;
 
 }
