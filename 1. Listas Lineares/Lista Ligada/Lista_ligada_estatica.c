@@ -115,9 +115,36 @@ bool inserirOrd(LISTA* l, REGISTRO reg)
         l->A[ant].prox = i;
     }
     return true;
-
-
 }
+
+void devolverNO(LISTA* l, int j)
+{
+    l->A[j].prox = l->dispo;
+    l->dispo = j;
+}
+
+bool excluirElemento(LISTA* l, REGISTRO reg)
+{
+    int i = l->inicio;
+    int ant = INVALIDO;
+    TIPOCHAVE ch = reg.chave;
+    while(i != INVALIDO && l->A[i].reg.chave < ch)
+    {
+        ant = i;
+        i = l->A[i].prox;
+    }
+    if(i == INVALIDO || l->A[i].reg.chave != ch) return false;
+    if(ant == INVALIDO) l->inicio = l->A[i].prox;
+    else l->A[ant].prox = l->A[i].prox;
+    devolverNO(l, i);
+    return true;
+}
+
+void reinicializarLista(LISTA* l)
+{
+    inicializarLista(l);
+}
+
 
 
 
