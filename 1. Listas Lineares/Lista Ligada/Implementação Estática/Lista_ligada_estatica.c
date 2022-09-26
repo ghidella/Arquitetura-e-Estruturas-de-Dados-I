@@ -145,7 +145,13 @@ void reinicializarLista(LISTA* l)
     inicializarLista(l);
 }
 
-
+int ultimo(LISTA* l){
+    if(l->inicio == INVALIDO) return -1;
+    int i;
+    for(i = 0; i < MAX; i++){
+        if(l->A[i].prox == INVALIDO) return i;
+    }
+}
 
 
 int main()
