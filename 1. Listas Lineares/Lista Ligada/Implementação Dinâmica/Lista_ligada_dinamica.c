@@ -106,6 +106,25 @@ bool inserirOrd(LISTA* l, REGISTRO reg)
 
 }
 
+bool excluirElemenLista(LISTA* l, TIPOCHAVE ch){
+    PONT ant, i;
+    i = buscaSequencialExc(l, ch, &ant);
+    if(i == NULL) return false;
+    if(ant == NULL) l->inicio = i->prox;
+    else ant->prox = i->prox;
+    free(i);
+    return true;
+}
+
+void reinicializarLista(LISTA* l){
+    PONT end = l->inicio;
+    while(end != NULL){
+        PONT apagar = end;
+        end = end->prox;
+        free(apagar);
+    }
+    l->inicio = NULL;
+}
 
 int main()
 {
