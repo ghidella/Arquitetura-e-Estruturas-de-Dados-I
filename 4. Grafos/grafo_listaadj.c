@@ -1,19 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-typedef struct No
-{
-    int destino;
-    float altura;
-    struct No *prox;
-} No;
-
-typedef struct
-{
-    int num_vertices;
-    No **lista_adj;
-} GrafoListaAdj;
+#include "grafo_listaadj.h"
 
 GrafoListaAdj *criarGrafo(int num_vertices)
 {
@@ -47,15 +34,17 @@ void destruirGrafo(GrafoListaAdj *grafo)
     free(grafo);
 }
 
-void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino)
+void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino, float peso)
 {
     No *novoNo = (No *)malloc(sizeof(No));
     novoNo->destino = destino;
+    novoNo->peso = peso;
     novoNo->prox = grafo->lista_adj[origem];
     grafo->lista_adj[origem] = novoNo;
 
     novoNo = (No *)malloc(sizeof(No));
     novoNo->destino = origem;
+    novoNo->peso = peso;
     novoNo->prox = grafo->lista_adj[destino];
     grafo->lista_adj[destino] = novoNo;
 }
@@ -134,7 +123,7 @@ void imprimirGrafo(GrafoListaAdj *grafo)
         printf("Vértice %d: ", i);
         while (atual != NULL)
         {
-            printf("%d ", atual->destino);
+            printf("%d (%.2f) ", atual->destino, atual->peso);
             atual = atual->prox;
         }
         printf("\n");

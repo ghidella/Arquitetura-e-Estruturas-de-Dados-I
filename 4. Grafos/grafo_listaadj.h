@@ -4,7 +4,7 @@
 typedef struct No
 {
     int destino;
-    float altura;
+    float peso;
     struct No *prox;
 } No;
 
@@ -16,7 +16,7 @@ typedef struct
 
 GrafoListaAdj *criarGrafo(int num_vertices);
 void destruirGrafo(GrafoListaAdj *grafo);
-void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino);
+void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino, float peso);
 void removerAresta(GrafoListaAdj *grafo, int origem, int destino);
 int verificarAdjacencia(GrafoListaAdj *grafo, int origem, int destino);
 void imprimirGrafo(GrafoListaAdj *grafo);

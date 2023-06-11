@@ -1,10 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-libgrafo_matrizadj: grafo_matrizadj.o
+all: ep1_matriz_13672126 ep1_lista_13672126
 
-grafo_matrizadj.o: grafo_matrizadj.c grafo_matrizadj.h
-	$(CC) $(CFLAGS) -c grafo_matrizadj.c
+ep1_matriz_13672126: main.c grafo_matrizadj.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+ep1_lista_13672126: main.c grafo_listaadj.c
+	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f libgrafo_matrizadj *.o
+	rm -f ep1_matriz_13672126 ep1_lista_13672126
