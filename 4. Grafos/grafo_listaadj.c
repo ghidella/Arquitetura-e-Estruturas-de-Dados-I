@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "grafo_listaadj.h"
 
-GrafoListaAdj *criarGrafo(int num_vertices)
+Grafo *criarGrafo(int num_vertices)
 {
-    GrafoListaAdj *grafo = (GrafoListaAdj *)malloc(sizeof(GrafoListaAdj));
+    Grafo *grafo = (Grafo *)malloc(sizeof(Grafo));
     grafo->num_vertices = num_vertices;
 
     grafo->lista_adj = (No **)malloc(num_vertices * sizeof(No *));
@@ -17,7 +17,7 @@ GrafoListaAdj *criarGrafo(int num_vertices)
     return grafo;
 }
 
-void destruirGrafo(GrafoListaAdj *grafo)
+void destruirGrafo(Grafo *grafo)
 {
     int i;
     for (i = 0; i < grafo->num_vertices; i++)
@@ -34,7 +34,7 @@ void destruirGrafo(GrafoListaAdj *grafo)
     free(grafo);
 }
 
-void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino, float peso)
+void adicionarAresta(Grafo *grafo, int origem, int destino, float peso)
 {
     No *novoNo = (No *)malloc(sizeof(No));
     novoNo->destino = destino;
@@ -49,7 +49,7 @@ void adicionarAresta(GrafoListaAdj *grafo, int origem, int destino, float peso)
     grafo->lista_adj[destino] = novoNo;
 }
 
-void removerAresta(GrafoListaAdj *grafo, int origem, int destino)
+void removerAresta(Grafo *grafo, int origem, int destino)
 {
     No *atual = grafo->lista_adj[origem];
     No *anterior = NULL;
@@ -98,7 +98,7 @@ void removerAresta(GrafoListaAdj *grafo, int origem, int destino)
     }
 }
 
-int verificarAdjacencia(GrafoListaAdj *grafo, int origem, int destino)
+int verificarAdjacencia(Grafo *grafo, int origem, int destino)
 {
     No *atual = grafo->lista_adj[origem];
 
@@ -114,7 +114,7 @@ int verificarAdjacencia(GrafoListaAdj *grafo, int origem, int destino)
     return 0;
 }
 
-void imprimirGrafo(GrafoListaAdj *grafo)
+void imprimirGrafo(Grafo *grafo)
 {
     int i;
     for (i = 0; i < grafo->num_vertices; i++)
@@ -128,4 +128,35 @@ void imprimirGrafo(GrafoListaAdj *grafo)
         }
         printf("\n");
     }
+}
+
+float obterPesoAresta(Grafo *grafo, int origem, int destino)
+{
+    Grafo *g = (Grafo *)grafo;
+    No *atual = g->lista_adj[origem];
+    while (atual != NULL)
+    {
+        if (atual->destino == destino)
+        {
+            return atual->peso;
+        }
+        atual = atual->prox;
+    }
+    return 0;
+}
+
+No *obterNoPelaOrigem(Grafo *grafo, int origem)
+{
+    if (!grafo->lista_adj[origem])
+    {
+        return NULL;
+    }
+    return grafo->lista_adj[origem];
+}
+
+No *obterProxNo(Grafo *grafo, No *atual)
+{
+    if (!grafo)
+        return NULL;
+    return atual->prox;
 }

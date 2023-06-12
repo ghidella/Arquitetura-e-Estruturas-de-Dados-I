@@ -2,76 +2,81 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-GrafoMatrizAdj *criarGrafo(int num_vertices)
+Grafo *criarGrafo(int num_vertices)
 {
-    GrafoMatrizAdj *grafo = (GrafoMatrizAdj *)malloc(sizeof(GrafoMatrizAdj));
-
-    if (grafo == NULL)
-    {
-        printf("Erro: falha ao alocar memória para o grafo\n");
-        return NULL;
-    }
-
+    Grafo *grafo = (Grafo *)malloc(sizeof(Grafo));
     grafo->num_vertices = num_vertices;
+    grafo->matriz_adj = (No***)malloc(num_vertices * sizeof(struct No**));
 
-    // Inicializa a matriz de adjacência com zeros
     for (int i = 0; i < num_vertices; i++)
     {
+        grafo->matriz_adj[i] = (No**)malloc(sizeof(No*) * num_vertices);
         for (int j = 0; j < num_vertices; j++)
         {
-            grafo->matriz_adj[i][j] = 0;
+            grafo->matriz_adj[i][j] = NULL;
         }
     }
 
     return grafo;
 }
 
-void destruirGrafo(GrafoMatrizAdj *grafo)
+void destruirGrafo(Grafo *grafo)
 {
     free(grafo);
 }
 
-void adicionarAresta(GrafoMatrizAdj *grafo, int origem, int destino)
+void adicionarAresta(Grafo *grafo, int origem, int destino, float peso)
 {
-    if (origem < 0 || origem >= grafo->num_vertices || destino < 0 || destino >= grafo->num_vertices)
-    {
-        printf("Erro: vértices inválidos\n");
-        return;
-    }
+    No *novoNo = (No *)malloc(sizeof(No));
+    novoNo->destino = destino;
+    novoNo->peso = peso;
+    novoNo->origem = origem;
 
-    grafo->matriz_adj[origem][destino] = 1;
+    No *novoNo2 = (No *)malloc(sizeof(No));
+    novoNo2->destino = origem;
+    novoNo2->peso = peso;
+    novoNo2->origem = destino;
+
+    grafo->matriz_adj[origem][destino] = novoNo;
+    grafo->matriz_adj[destino][origem] = novoNo2;
 }
 
-void removerAresta(GrafoMatrizAdj *grafo, int origem, int destino)
+void removerAresta(Grafo *grafo, int origem, int destino)
 {
-    if (origem < 0 || origem >= grafo->num_vertices || destino < 0 || destino >= grafo->num_vertices)
-    {
-        printf("Erro: vértices inválidos\n");
-        return;
-    }
-
-    grafo->matriz_adj[origem][destino] = 0;
+    free(grafo->matriz_adj[origem][destino]);
 }
 
-int verificarAdjacencia(GrafoMatrizAdj *grafo, int origem, int destino)
-{
-    if (origem < 0 || origem >= grafo->num_vertices || destino < 0 || destino >= grafo->num_vertices)
-    {
-        printf("Erro: vértices inválidos\n");
-        return 0;
-    }
-
-    return grafo->matriz_adj[origem][destino];
-}
-
-void imprimirGrafo(GrafoMatrizAdj *grafo)
+void imprimirGrafo(Grafo *grafo)
 {
     for (int i = 0; i < grafo->num_vertices; i++)
     {
         for (int j = 0; j < grafo->num_vertices; j++)
         {
-            printf("%d ", grafo->matriz_adj[i][j]);
+
+            if (grafo->matriz_adj[i][j] != NULL)
+                printf("%.1f ", grafo->matriz_adj[i][j]->peso);
         }
         printf("\n");
     }
+}
+
+No *obterNoPelaOrigem(Grafo *grafo, int origem)
+{
+    for (int i = 0; i < grafo->num_vertices; i++)
+    {
+        if (grafo->matriz_adj[origem][i] != NULL)
+            return grafo->matriz_adj[origem][i];
+    }
+    return NULL;
+}
+
+No *obterProxNo(Grafo *grafo, No *no)
+{
+    for (int i = no->destino + 1; i < grafo->num_vertices; i++)
+    {
+        if (grafo->matriz_adj[no->origem][i] != NULL)
+            return grafo->matriz_adj[no->origem][i];
+    }
+
+    return NULL;
 }
